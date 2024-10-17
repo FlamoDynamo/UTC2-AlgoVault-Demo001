@@ -1,0 +1,125 @@
+#pragma version 5
+txn ApplicationID
+int 0
+==
+bnz main_l10
+txna ApplicationArgs 0
+byte "store_credentials"
+==
+bnz main_l9
+txna ApplicationArgs 0
+byte "retrieve_credentials"
+==
+bnz main_l8
+txna ApplicationArgs 0
+byte "update_credentials"
+==
+bnz main_l7
+txna ApplicationArgs 0
+byte "delete_credentials"
+==
+bnz main_l6
+err
+main_l6:
+txn Sender
+byte "owner"
+app_global_get
+==
+assert
+int 0
+byte "un_"
+txna ApplicationArgs 1
+concat
+app_local_del
+int 0
+byte "pw_"
+txna ApplicationArgs 1
+concat
+app_local_del
+int 0
+byte "meta_"
+txna ApplicationArgs 1
+concat
+app_local_del
+int 1
+return
+main_l7:
+txn Sender
+byte "owner"
+app_global_get
+==
+assert
+int 0
+byte "un_"
+txna ApplicationArgs 1
+concat
+txna ApplicationArgs 2
+app_local_put
+int 0
+byte "pw_"
+txna ApplicationArgs 1
+concat
+txna ApplicationArgs 3
+app_local_put
+int 0
+byte "meta_"
+txna ApplicationArgs 1
+concat
+txna ApplicationArgs 4
+app_local_put
+int 1
+return
+main_l8:
+txn Sender
+byte "owner"
+app_global_get
+==
+assert
+int 0
+byte "un_"
+txna ApplicationArgs 1
+concat
+app_local_get
+byte ":"
+concat
+int 0
+byte "pw_"
+txna ApplicationArgs 1
+concat
+app_local_get
+concat
+log
+int 1
+return
+main_l9:
+txn Sender
+byte "owner"
+app_global_get
+==
+assert
+int 0
+byte "un_"
+txna ApplicationArgs 1
+concat
+txna ApplicationArgs 2
+app_local_put
+int 0
+byte "pw_"
+txna ApplicationArgs 1
+concat
+txna ApplicationArgs 3
+app_local_put
+int 0
+byte "meta_"
+txna ApplicationArgs 1
+concat
+txna ApplicationArgs 4
+app_local_put
+int 1
+return
+main_l10:
+byte "owner"
+txn Sender
+app_global_put
+int 1
+return
